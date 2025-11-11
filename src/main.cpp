@@ -2,6 +2,7 @@
 #include "alu/ALU.h"
 #include "register/RegisterFile.h"
 #include "memory/Memory.h"
+#include "pipeline/Pipeline.h"
 
 int main() {
     // --- ALU test ---
@@ -36,5 +37,15 @@ int main() {
     std::cout << "Memory[0]: " << mem.loadWord(0) << "\n"; // should print 123
     std::cout << "Memory[1]: " << mem.loadWord(1) << "\n"; // should print 456
 
-    return 0;
+
+
+// After ALU, RegisterFile, Memory initialization
+Pipeline pipeline(rf, alu, mem);
+
+pipeline.fetch("ADD $3, $1, $2", 0);
+pipeline.decode();
+pipeline.execute();
+pipeline.memoryAccess();
+pipeline.writeBack();
+
 }
