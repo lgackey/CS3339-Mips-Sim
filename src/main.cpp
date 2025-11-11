@@ -3,6 +3,7 @@
 #include "register/RegisterFile.h"
 #include "memory/Memory.h"
 #include "pipeline/Pipeline.h"
+#include "control/ControlUnit.h"
 
 int main() {
     // --- ALU test ---
@@ -47,5 +48,15 @@ pipeline.decode();
 pipeline.execute();
 pipeline.memoryAccess();
 pipeline.writeBack();
+
+ControlUnit cu;
+auto signals = cu.generateSignals("ADD");
+std::cout << "ADD signals: RegWrite=" << signals.RegWrite
+          << ", ALUOp=" << signals.ALUOp << "\n";
+
+signals = cu.generateSignals("LW");
+std::cout << "LW signals: RegWrite=" << signals.RegWrite
+          << ", MemRead=" << signals.MemRead
+          << ", ALUOp=" << signals.ALUOp << "\n";
 
 }
