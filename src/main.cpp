@@ -1,6 +1,7 @@
 #include <iostream>
 #include "alu/ALU.h"
 #include "register/RegisterFile.h"
+#include "memory/Memory.h"
 
 int main() {
     // --- ALU test ---
@@ -18,13 +19,22 @@ int main() {
 
     // --- Register File test ---
     RegisterFile rf;
-    rf.write(1, 42); // write value to register 1
-    rf.write(2, 100); // write value to register 2
+    rf.write(1, 42);
+    rf.write(2, 100);
 
     std::cout << "\nRegister File Tests:\n";
-    std::cout << "Register 1: " << rf.read(1) << "\n"; // should print 42
-    std::cout << "Register 2: " << rf.read(2) << "\n"; // should print 100
-    std::cout << "Register 0: " << rf.read(0) << "\n"; // should print 0 (always zero)
+    std::cout << "Register 1: " << rf.read(1) << "\n";
+    std::cout << "Register 2: " << rf.read(2) << "\n";
+    std::cout << "Register 0: " << rf.read(0) << "\n";
+
+    // --- Memory test ---
+    Memory mem(256); // 256 words of memory
+    mem.storeWord(0, 123);
+    mem.storeWord(1, 456);
+
+    std::cout << "\nMemory Tests:\n";
+    std::cout << "Memory[0]: " << mem.loadWord(0) << "\n"; // should print 123
+    std::cout << "Memory[1]: " << mem.loadWord(1) << "\n"; // should print 456
 
     return 0;
 }
