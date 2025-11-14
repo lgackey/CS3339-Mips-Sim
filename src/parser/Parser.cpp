@@ -3,6 +3,10 @@
 #include <sstream>
 #include <iostream>
 
+using namespace std;
+
+
+/*
 std::vector<Instruction> Parser::parseFile(const std::string& filename) {
     std::vector<Instruction> instructions;
     std::ifstream file(filename);
@@ -22,3 +26,4 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
 
     return instructions;
 }
+*/

@@ -1,14 +1,28 @@
-#pragma once
-#include <string>
-#include <vector>
+#ifndef PARSER_H
+#define PARSER_H
 
-struct Instruction {
-    std::string opcode;
-    int rs, rt, rd;
-    int immediate;
-};
+#include <string>
+using namespace std;
 
 class Parser {
 public:
-    std::vector<Instruction> parseFile(const std::string& filename);
+
+    enum instructions {
+        ADD,
+        ADDI,
+        SUB,
+        MUL,
+        AND,
+        OR,
+        SLL,
+        SRL,
+        LW,
+        SW,
+        BEQ,
+        J,
+        NOP,
+    };
 };
+
+
+#endif
