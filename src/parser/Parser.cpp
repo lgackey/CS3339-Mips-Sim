@@ -55,10 +55,11 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
         std::istringstream iss(cleaned);
         std::string opcode;
         int rs = 0, rt = 0, rd = 0, imm = 0;
+        iss >> opcode; // simple placeholder parsing
         // Normalize opcode (ADD, SUB, LW, SW, etc.)
         std::transform(opcode.begin(), opcode.end(), opcode.begin(), ::toupper);
-        iss >> opcode; // simple placeholder parsing
-        instructions.push_back({opcode, rs, rt, rd, imm});
+   
+       
 
         // parse based on opcode
 if (opcode == "ADDI") {
@@ -73,15 +74,7 @@ if (opcode == "ADDI") {
         if (!rs_str.empty() && rs_str.back() == ',') rs_str.pop_back();
         iss >> imm;
 
-        // simple register-to-number (temporary: assume numeric like 1,2 or $1)
-        // for now try to parse numeric register like 1 or $1; I'll replace with getRegisterNumber later
-        auto parseRegNum = [](const std::string &s)->int{
-            std::string t = s;
-            // strip leading '$' if present
-            if (!t.empty() && t[0] == '$') t = t.substr(1);
-            try { return std::stoi(t); }
-            catch (...) { return 0; }
-        };
+       
 
         rt = getRegisterNumber(rt_str);
         rs = getRegisterNumber(rs_str);
