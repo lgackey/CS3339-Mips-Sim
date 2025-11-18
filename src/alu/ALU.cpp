@@ -16,8 +16,9 @@ int ALU::sub(int regArr[], int reg1, int reg2, int reg3) {
     return regArr[reg1];
 }
 
-int ALU::mul(int a, int b) {
-    return a * b;
+int ALU::mul(int regArr[], int reg1, int reg2, int reg3) {
+    regArr[reg1] = regArr[reg2] * regArr[reg3];
+    return regArr[reg1];
 }
 
 int ALU::bitwise_and(int a, int b) {
@@ -28,20 +29,21 @@ int ALU::bitwise_or(int a, int b) {
     return a | b;
 }
 
-int ALU::sll(int value, int shamt) {
-    return value << shamt;
+int ALU::sll(int regArr[], int reg1, int reg2, int samt) {
+    return regArr[reg1] = regArr[reg2] << samt;
 }
 
-int ALU::srl(int value, int shamt) {
-    return static_cast<unsigned int>(value) >> shamt;
+int ALU::srl(int regArr[], int reg1, int reg2, int samt) {
+    regArr[reg1] = static_cast<unsigned int>(regArr[reg2]) >> samt;
+    return regArr[reg1];
 }
 
-void ALU::lw() {
-
+std::string ALU::lw(std::string regArr[], int reg1) {
+    return regArr[reg1];
 }
 
-void ALU::sw() {
-
+void ALU::sw(std::string regArr[], int reg1, std::string str) {
+    regArr[reg1] = str;
 }
 
 std::bitset<32> makeBinary(int num) {
@@ -52,6 +54,7 @@ std::bitset<32> makeBinary(int num) {
 }
 
 int ALU::makeInteger(std::bitset<32> binary) {
+
     return 0;
 }
 
