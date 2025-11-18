@@ -83,8 +83,8 @@ if (opcode == "ADDI") {
             catch (...) { return 0; }
         };
 
-        rt = parseRegNum(rt_str);
-        rs = parseRegNum(rs_str);
+        rt = getRegisterNumber(rt_str);
+        rs = getRegisterNumber(rs_str);
     }
 }
 else {
