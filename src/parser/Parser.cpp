@@ -33,7 +33,7 @@ static std::string stripComments(const std::string& line) {
 using namespace std;
 
 
-/*
+
 std::vector<Instruction> Parser::parseFile(const std::string& filename) {
     std::vector<Instruction> instructions;
     std::ifstream file(filename);
@@ -55,10 +55,11 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
         std::istringstream iss(cleaned);
         std::string opcode;
         int rs = 0, rt = 0, rd = 0, imm = 0;
+        // Normalize opcode (ADD, SUB, LW, SW, etc.)
+        std::transform(opcode.begin(), opcode.end(), opcode.begin(), ::toupper);
         iss >> opcode >> rd >> rs >> rt; // simple placeholder parsing
         instructions.push_back({opcode, rs, rt, rd, imm});
     }
 
     return instructions;
 }
-*/
