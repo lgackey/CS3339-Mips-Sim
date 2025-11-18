@@ -1,6 +1,8 @@
-#pragma once
+#ifndef PARSER_H
+#define PARSER_H
+
 #include <string>
-#include <vector>
+using namespace std;
 
 struct Instruction {
     std::string opcode;
@@ -20,3 +22,6 @@ public:
     int getRegisterNumber(const std::string& reg);
     Instruction parseLine(const std::string& line);
 };
+
+
+#endif
