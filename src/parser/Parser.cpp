@@ -57,7 +57,42 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
         int rs = 0, rt = 0, rd = 0, imm = 0;
         // Normalize opcode (ADD, SUB, LW, SW, etc.)
         std::transform(opcode.begin(), opcode.end(), opcode.begin(), ::toupper);
-        iss >> opcode >> rd >> rs >> rt; // simple placeholder parsing
+        iss >> opcode; // simple placeholder parsing
+        instructions.push_back({opcode, rs, rt, rd, imm});
+
+        // parse based on opcode
+if (opcode == "ADDI") {
+    // expected: addi rt, rs, imm
+    std::string rt_str, rs_str;
+    if (!(iss >> rt_str)) {
+        std::cerr << "Parser error: missing rt for ADDI in line: " << cleaned << "\n";
+    } else {
+        // remove possible trailing commas
+        if (rt_str.back() == ',') rt_str.pop_back();
+        iss >> rs_str;
+        if (!rs_str.empty() && rs_str.back() == ',') rs_str.pop_back();
+        iss >> imm;
+
+        // simple register-to-number (temporary: assume numeric like 1,2 or $1)
+        // for now try to parse numeric register like 1 or $1; I'll replace with getRegisterNumber later
+        auto parseRegNum = [](const std::string &s)->int{
+            std::string t = s;
+            // strip leading '$' if present
+            if (!t.empty() && t[0] == '$') t = t.substr(1);
+            try { return std::stoi(t); }
+            catch (...) { return 0; }
+        };
+
+        rt = parseRegNum(rt_str);
+        rs = parseRegNum(rs_str);
+    }
+}
+else {
+    // fallback: keep old placeholder parsing for now
+    iss >> rd >> rs >> rt;
+}
+
+        // Store parsed instruction
         instructions.push_back({opcode, rs, rt, rd, imm});
     }
 
