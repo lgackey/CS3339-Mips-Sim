@@ -120,6 +120,22 @@ else if (opcode == "LW" || opcode == "SW") {
         }
     }
 } 
+else if (opcode == "BEQ") {
+    string rs_str, rt_str, label;
+    if (!(iss >> rs_str >> rt_str >> label)) {
+        cerr << "Parser error: missing operands for BEQ in line: " << cleaned << "\n";
+    } else {
+        if (rs_str.back() == ',') rs_str.pop_back();
+        if (rt_str.back() == ',') rt_str.pop_back();
+        rs = getRegisterNumber(rs_str);
+        rt = getRegisterNumber(rt_str);
+
+        // Store label as immediate for now (to resolve later)
+        // You can add a label-to-index map in next step
+        imm = 0;
+    }
+}
+
 else {
     // fallback: keep old placeholder parsing for now
     iss >> rd >> rs >> rt;
