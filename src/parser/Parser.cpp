@@ -105,6 +105,28 @@ else if (opcode == "ADD" || opcode == "SUB" || opcode == "AND" ||
         rt = getRegisterNumber(rt_str);
     }
 }
+
+else if (opcode == "LW" || opcode == "SW") {
+    // I-type memory parsing
+    std::string rt_str, mem_str;
+    if (!(iss >> rt_str >> mem_str)) {
+        std::cerr << "Parser error: missing operands for " << opcode << " in line: " << cleaned << "\n";
+    } else {
+        if (rt_str.back() == ',') rt_str.pop_back();
+        rt = getRegisterNumber(rt_str);
+
+        size_t lp = mem_str.find('(');
+        size_t rp = mem_str.find(')');
+        if (lp != std::string::npos && rp != std::string::npos && rp > lp) {
+            std::string offset_str = mem_str.substr(0, lp);
+            std::string base_str   = mem_str.substr(lp + 1, rp - lp - 1);
+            try { imm = std::stoi(offset_str); } catch(...) { imm = 0; }
+            rs = getRegisterNumber(base_str);
+        } else {
+            std::cerr << "Parser error: malformed memory operand in line: " << cleaned << "\n";
+        }
+    }
+} 
 else {
     // fallback: keep old placeholder parsing for now
     iss >> rd >> rs >> rt;
