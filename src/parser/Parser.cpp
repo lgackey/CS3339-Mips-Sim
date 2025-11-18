@@ -87,6 +87,24 @@ if (opcode == "ADDI") {
         rs = getRegisterNumber(rs_str);
     }
 }
+
+else if (opcode == "ADD" || opcode == "SUB" || opcode == "AND" ||
+         opcode == "OR"  || opcode == "SLL" || opcode == "SRL") {
+    // expected: opcode rd, rs, rt
+    std::string rd_str, rs_str, rt_str;
+    if (!(iss >> rd_str >> rs_str >> rt_str)) {
+        std::cerr << "Parser error: missing registers for " << opcode << " in line: " << cleaned << "\n";
+    } else {
+        // strip commas
+        if (rd_str.back() == ',') rd_str.pop_back();
+        if (rs_str.back() == ',') rs_str.pop_back();
+        if (rt_str.back() == ',') rt_str.pop_back();
+
+        rd = getRegisterNumber(rd_str);
+        rs = getRegisterNumber(rs_str);
+        rt = getRegisterNumber(rt_str);
+    }
+}
 else {
     // fallback: keep old placeholder parsing for now
     iss >> rd >> rs >> rt;
