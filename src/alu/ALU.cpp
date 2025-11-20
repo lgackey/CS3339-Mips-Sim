@@ -47,6 +47,3 @@ void ALU::sw(std::string regArr[], int reg1, std::string str) {
 }
 
 
-
-
-
