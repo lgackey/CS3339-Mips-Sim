@@ -1,5 +1,7 @@
 #pragma once
 #include <array>
+#include <iostream>
+#include <stdexcept>
 
 class RegisterFile {
 private:
@@ -9,4 +11,9 @@ public:
     RegisterFile();
     int read(int regNum) const;
     void write(int regNum, int value);
+    // Reset all registers to 0
+    void reset();
+
+    // Print all registers (for debug mode)
+    void print() const;
 };
