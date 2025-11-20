@@ -17,3 +17,17 @@ void Memory::storeWord(int address, int value) {
     }
     mem[address] = value;
 }
+
+// Reset all memory to 0
+void Memory::reset() {
+    std::fill(mem.begin(), mem.end(), 0);
+}
+
+// Print memory contents (for debug mode)
+void Memory::print() const {
+    std::cout << "Memory State:\n";
+    for (size_t i = 0; i < mem.size(); ++i) {
+        if (mem[i] != 0) // only print non-zero locations for brevity
+            std::cout << "Address " << i << ": " << mem[i] << "\n";
+    }
+}
