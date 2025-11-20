@@ -1,6 +1,6 @@
 #include <iostream>
 #include "alu/ALU.h"
-#include "register_file/RegisterFile.h"
+#include "register/RegisterFile.h"
 #include "memory/Memory.h"
 #include "pipeline/Pipeline.h"
 #include "control/ControlUnit.h"
@@ -11,8 +11,12 @@ int main() {
     int a = 10, b = 5;
 
     std::cout << "ALU Tests:\n";
+    try {
     std::cout << "ADD: " << alu.add(a,b) << "\n";
     std::cout << "SUB: " << alu.sub(a,b) << "\n";
+    } catch (const std::overflow_error& e) {
+        std::cerr << "ALU error: " << e.what() << "\n";
+    }
     std::cout << "MUL: " << alu.mul(a,b) << "\n";
     std::cout << "AND: " << alu.bitwise_and(a,b) << "\n";
     std::cout << "OR: " << alu.bitwise_or(a,b) << "\n";
@@ -25,9 +29,8 @@ int main() {
     rf.write(2, 100);
 
     std::cout << "\nRegister File Tests:\n";
-    std::cout << "Register 1: " << rf.read(1) << "\n";
-    std::cout << "Register 2: " << rf.read(2) << "\n";
-    std::cout << "Register 0: " << rf.read(0) << "\n";
+     rf.print();  // debug print all registers
+
 
     // --- Memory test ---
     Memory mem(256); // 256 words of memory
@@ -35,10 +38,7 @@ int main() {
     mem.storeWord(1, 456);
 
     std::cout << "\nMemory Tests:\n";
-    std::cout << "Memory[0]: " << mem.loadWord(0) << "\n"; // should print 123
-    std::cout << "Memory[1]: " << mem.loadWord(1) << "\n"; // should print 456
-
-
+    mem.print(); // debug print memory contents
 
 // After ALU, RegisterFile, Memory initialization
 Pipeline pipeline(rf, alu, mem);
@@ -50,13 +50,15 @@ pipeline.memoryAccess();
 pipeline.writeBack();
 
 ControlUnit cu;
+try{
 auto signals = cu.generateSignals("ADD");
-std::cout << "ADD signals: RegWrite=" << signals.RegWrite
-          << ", ALUOp=" << signals.ALUOp << "\n";
+   cu.printSignals(signals);
 
 signals = cu.generateSignals("LW");
-std::cout << "LW signals: RegWrite=" << signals.RegWrite
-          << ", MemRead=" << signals.MemRead
-          << ", ALUOp=" << signals.ALUOp << "\n";
+cu.printSignals(signals);
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "ControlUnit error: " << e.what() << "\n";
+    }
 
+    return 0;
 }
