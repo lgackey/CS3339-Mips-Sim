@@ -1,6 +1,6 @@
 #include <iostream>
 #include "alu/ALU.h"
-#include "register/RegisterFile.h"
+#include "register_file/RegisterFile.h"
 #include "memory/Memory.h"
 #include "pipeline/Pipeline.h"
 #include "control/ControlUnit.h"
