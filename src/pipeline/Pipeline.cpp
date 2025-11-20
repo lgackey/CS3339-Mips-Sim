@@ -20,6 +20,9 @@ void Pipeline::decode() {
     id_ex.rtVal = 2;
     id_ex.rd = 3;
     id_ex.immediate = 0;
+
+     // generate control signals
+    id_ex.signals = controlUnit.generateSignals(id_ex.opcode);
 }
 
 // Execute stage: call ALU
@@ -34,8 +37,17 @@ void Pipeline::execute() {
 
 // Memory stage: for now just pass values through
 void Pipeline::memoryAccess() {
-    mem_wb.writeData = ex_mem.aluResult;
+    ex_mem.signals = id_ex.signals;
+   
+     if (ex_mem.signals.MemRead)
+        mem_wb.writeData = mem.loadWord(ex_mem.aluResult);
+    else if (ex_mem.signals.MemWrite)
+        mem.storeWord(ex_mem.aluResult, ex_mem.rtVal);
+    else
+        mem_wb.writeData = ex_mem.aluResult;
+
     mem_wb.rd = ex_mem.rd;
+    mem_wb.signals = ex_mem.signals;
 }
 
 // WriteBack stage: write to register file
