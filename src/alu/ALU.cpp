@@ -21,12 +21,12 @@ int ALU::mul(int regArr[], int reg1, int reg2, int reg3) {
     return regArr[reg1];
 }
 
-int ALU::bitwise_and(int a, int b) {
-    return a & b;
+int ALU::bitwise_and(int regArr[], int reg1, int reg2) {
+    return regArr[reg1] & regArr[reg2];
 }
 
-int ALU::bitwise_or(int a, int b) {
-    return a | b;
+int ALU::bitwise_or(int regArr[], int reg1, int reg2) {
+    return regArr[reg1] | regArr[reg2];
 }
 
 int ALU::sll(int regArr[], int reg1, int reg2, int samt) {
@@ -44,18 +44,6 @@ std::string ALU::lw(std::string regArr[], int reg1) {
 
 void ALU::sw(std::string regArr[], int reg1, std::string str) {
     regArr[reg1] = str;
-}
-
-std::bitset<32> makeBinary(int num) {
-    uint32_t temp_bit_value;
-    memcpy(&temp_bit_value, &num, sizeof(temp_bit_value));
-    std::bitset<32> binary_form(temp_bit_value);
-    return binary_form;
-}
-
-int ALU::makeInteger(std::bitset<32> binary) {
-
-    return 0;
 }
 
 
