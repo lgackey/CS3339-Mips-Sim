@@ -53,6 +53,19 @@ ControlSignals ControlUnit::generateSignals(const std::string& opcode) {
         signals.MemToReg = false;
         signals.ALUOp = "";
     }
+    else {
+        throw std::invalid_argument("Unknown opcode: " + opcode);
+    }
 
     return signals;
+}
+
+
+void ControlUnit::printSignals(const ControlSignals& s) const {
+    std::cout << "RegWrite=" << s.RegWrite
+              << ", MemRead=" << s.MemRead
+              << ", MemWrite=" << s.MemWrite
+              << ", ALUSrc=" << s.ALUSrc
+              << ", MemToReg=" << s.MemToReg
+              << ", ALUOp=" << s.ALUOp << "\n";
 }
