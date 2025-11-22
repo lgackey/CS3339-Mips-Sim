@@ -1,23 +1,24 @@
-#ifndef ALU_H
-#define ALU_H
+#pragma once
 #include <bitset>
+#include "../register/RegisterFile.h"
 
 class ALU {
+private:
+    RegisterFile* reg_file;
+
 public:
-    int add(int regArr[], int reg1, int reg2, int reg3);
-    int addi(int regArr[], int reg1, int reg2, int num);
-    int sub(int regArr[], int reg1, int reg2, int reg3);
-    int mul(int regArr[], int reg1, int reg2, int reg3);
+    ALU(RegisterFile& reg) {
+        reg_file = &reg;
+    }
+    void ADD(int reg1, int reg2, int reg3);
+    void ADDI(int reg1, int reg2, int num);
+    void SUB(int reg1, int reg2, int reg3);
+    void MUL(int reg1, int reg2, int reg3);
 
-    int bitwise_and(int regArr[], int reg1, int reg2);
-    int bitwise_or(int regArr[], int reg1, int reg2);
+    void AND(int reg1, int reg2, int reg3);
+    void OR(int reg1, int reg2, int reg3);
 
-    int sll(int regArr[], int reg1, int reg2, int samt);
-    int srl(int regArr[], int reg1, int reg2, int samt);
-
-    std::string lw(std::string regArr[], int reg);
-    void sw(std::string regArr[], int reg1, std::string str);
+    void SLL(int reg1, int reg2, int samt);
+    void SRL(int reg1, int reg2, int samt);
 
 };
-
-#endif
