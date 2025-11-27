@@ -1,44 +1,57 @@
 #pragma once
+
 #include <string>
+
 #include "register/RegisterFile.h"
 #include "alu/ALU.h"
 #include "memory/Memory.h"
 #include "ControlUnit.h"
 
-// --- Pipeline register structures ---
+class ControlUnit; // forward declaration in case the full definition isn't available here
+
+// Structure to hold control signals
+struct ControlSignals {
+    bool RegWrite = false;
+    bool MemRead = false;
+    bool MemWrite = false;
+};
+
+//  Pipeline register structures 
+
 struct IF_ID_Register {
     std::string instruction;
-    int pc;
+    int pc = 0;
 };
 
 struct ID_EX_Register {
     std::string opcode;
-    int rsVal, rtVal;
-    int rd;
-    int immediate;
+    int rsVal = 0;
+    int rtVal = 0;
+    int rd = 0;
+    int immediate = 0;
     ControlSignals signals; // Control signals for this instruction
 };
 
 struct EX_MEM_Register {
-    int aluResult;
-    int rtVal;  // for SW
-    int rd;
+    int aluResult = 0;
+    int rtVal = 0; // for SW
+    int rd = 0;
     ControlSignals signals;
 };
 
 struct MEM_WB_Register {
-    int writeData;
-    int rd;
+    int writeData = 0;
+    int rd = 0;
     ControlSignals signals;
 };
 
-// --- Pipeline class ---
+//  Pipeline class 
 class Pipeline {
 private:
     RegisterFile& rf;
     ALU& alu;
     Memory& mem;
-    ControlUnit controlUnit;
+    ControlUnit* controlUnit = nullptr;
 
     // Pipeline registers
     IF_ID_Register if_id;
