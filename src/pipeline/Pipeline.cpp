@@ -1,7 +1,7 @@
 #include "Pipeline.h"
 #include <iostream>
 
-Pipeline::Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_) 
+Pipeline::Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_)
     : rf(rf_), alu(alu_), mem(mem_) {}
 
 // Fetch stage: just store instruction in IF/ID
@@ -38,7 +38,7 @@ void Pipeline::execute() {
 // Memory stage: for now just pass values through
 void Pipeline::memoryAccess() {
     ex_mem.signals = id_ex.signals;
-   
+
      if (ex_mem.signals.MemRead)
         mem_wb.writeData = mem.loadWord(ex_mem.aluResult);
     else if (ex_mem.signals.MemWrite)

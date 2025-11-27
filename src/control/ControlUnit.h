@@ -1,4 +1,7 @@
 #pragma once
+#ifndef CONTROLUNIT_H
+#define CONTROLUNIT_H
+
 #include <string>
 #include <iostream>
 #include <stdexcept>
@@ -17,3 +20,5 @@ public:
     ControlSignals generateSignals(const std::string& opcode);
     void printSignals(const ControlSignals& s) const; // debug
 };
+
+#endif

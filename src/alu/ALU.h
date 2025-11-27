@@ -1,4 +1,7 @@
 #pragma once
+#ifndef ALU_H
+#define ALU_H
+
 #include <bitset>
 #include "../register/RegisterFile.h"
 
@@ -22,3 +25,5 @@ public:
     void SRL(int reg1, int reg2, int samt);
 
 };
+
+#endif

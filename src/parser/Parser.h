@@ -2,7 +2,9 @@
 #define PARSER_H
 
 #include <string>
-using namespace std;
+#include <vector>
+#include <unordered_map>
+
 
 struct Instruction {
     std::string opcode;

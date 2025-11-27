@@ -1,4 +1,7 @@
 #pragma once
+#ifndef MEMORY_H
+#define MEMORY_H
+
 #include <vector>
 #include <iostream>
 #include <stdexcept>
@@ -17,3 +20,5 @@ public:
     // Print memory contents (for debug mode)
     void print() const;
 };
+
+#endif

@@ -1,9 +1,12 @@
 #pragma once
+#ifndef PIPELINE_H
+#define PIPELINE_H
+
 #include <string>
-#include "register/RegisterFile.h"
-#include "alu/ALU.h"
-#include "memory/Memory.h"
-#include "ControlUnit.h"
+#include "../register/RegisterFile.h"
+#include "../alu/ALU.h"
+#include "../memory/Memory.h"
+#include "../control/ControlUnit.h"
 
 // --- Pipeline register structures ---
 struct IF_ID_Register {
@@ -60,3 +63,5 @@ public:
     // Optional: helper to print pipeline state for debugging
     void printPipelineState() const;
 };
+
+#endif

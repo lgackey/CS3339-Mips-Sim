@@ -1,4 +1,7 @@
 #pragma once
+#ifndef REGISTERFILE_H
+#define REGISTERFILE_H
+
 #include <array>
 #include <iostream>
 #include <stdexcept>
@@ -19,3 +22,5 @@ public:
     // Print all registers (for debug mode)
     void print() const;
 };
+
+#endif
