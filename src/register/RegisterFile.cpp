@@ -1,6 +1,7 @@
 #include "RegisterFile.h"
 #include <bitset>
 #include <cstdint>
+#include <iomanip>
 
 
 const std::string regNames[32] = {"zero", "at", "v0", "v1", "a0", "a1", "a2", "a3",
@@ -41,8 +42,8 @@ std::bitset<32> makeBinary(int n) {
 // Print all registers (useful for debug mode)
 void RegisterFile::print() const {
     std::cout << "Register File State:" << std::endl;
-    std::cout << "Name\tValue\tBinary Value" << std::endl;
+    std::cout << std::setw(10) << std::left << "Name" << std::setw(15) << "Value" << std::setw(15) << "Binary Value" << std::endl;
     for (int i = 0; i < 32; ++i) {
-        std::cout << regNames[i] << "\t" << regArr[i] << "\t" << makeBinary(regArr[i]) << std::endl;
+        std::cout << std::setw(10) << std::left << regNames[i] << std::setw(15) << regArr[i] << std::setw(15) << makeBinary(regArr[i]) << std::endl;
     }
 }
