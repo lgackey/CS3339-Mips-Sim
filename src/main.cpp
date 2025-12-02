@@ -23,7 +23,7 @@ int main(int argc, char*argv[]) {
     }
     std::string input_filename = argv[1];
     bool debug = atoi(argv[2]);
-    std::string output_filename = "MIPS_simulator_Output";
+    std::string output_filename = "MIPS_Output.txt";
     std::ofstream output;
 
     Memory mem;
@@ -46,6 +46,7 @@ int main(int argc, char*argv[]) {
     */
 
     int pc = 0;
+    output.open(output_filename);
     for(int i = 0; i < instructions.size(); i++) {
         pipeline.fetch(instructions[i], pc);
         pipeline.decode();
@@ -53,7 +54,7 @@ int main(int argc, char*argv[]) {
             pipeline.execute();
             if(pipeline.is_jump_instruction()) {
                 if(instructions[i].opcode == "J") {
-                    i = instructions[i].rs;
+                    i = instructions[i].rd;
                 }
                 if(instructions[i].opcode == "BEQ") {
                     i = instructions[i].rd;
@@ -65,24 +66,23 @@ int main(int argc, char*argv[]) {
 
                 if(debug) {
                     pipeline.printPipelineState();
-                    std::cout << std::endl;
+                    output << std::endl;
                     ctrl->printSignals(doWB);
-                    std::cout << std::endl;
+                    output << std::endl;
                     reg.print();
-                    std::cout << std::endl;
+                    output << std::endl;
                     mem.print();
-                    std::cout << std::endl;
+                    output << std::endl;
                 }
             }
-            pc += 4;
         }
     }
 
-    output.open(output_filename);
 
-    std::cout << std::endl;
+
+    output << std::endl;
     reg.print();
-    std::cout << std::endl;
+    output << std::endl;
     mem.print();
 
     output.close();

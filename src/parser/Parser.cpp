@@ -186,7 +186,7 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
     }
 
     for(pair<int, std::string> i : jump_calls) {
-        instructions[i.first].rs = getLabelIndex(i.second);
+        instructions[i.first].rd = getLabelIndex(i.second);
     }
 
     for(pair<int, std::string> i : beq_calls) {

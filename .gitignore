@@ -46,3 +46,4 @@ build
 *.dSYM
 
 mips_sim
+MIPS_Output.txt
