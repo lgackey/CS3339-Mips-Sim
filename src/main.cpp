@@ -47,6 +47,7 @@ int main(int argc, char*argv[]) {
 
     int pc = 0;
     for(int i = 0; i < instructions.size(); i++) {
+        std::cout << instructions[i].rd << std::endl;
         pipeline.fetch(instructions[i], pc);
         pipeline.decode();
         if(!pipeline.get_is_label()) {
@@ -61,9 +62,7 @@ int main(int argc, char*argv[]) {
             }
             else {
                 ControlSignals doWB = pipeline.memoryAccess();
-                if(!doWB.MemWrite) {
-                    pipeline.writeBack();
-                }
+                pipeline.writeBack();
                 pipeline.printPipelineState();
             }
             pc += 4;

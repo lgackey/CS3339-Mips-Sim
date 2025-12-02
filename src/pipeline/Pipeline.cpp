@@ -108,7 +108,8 @@ void Pipeline::execute() {
         std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
     }
     else if (id_ex.opcode == "ADDI") {
-        ex_mem.aluResult = alu.ADDI(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        std::cout << id_ex.rsVal << std::endl;
+        ex_mem.aluResult = alu.ADDI(id_ex.rsVal, id_ex.rtVal, id_ex.immediate);
         std::cout << "Executing ADDI: " << ex_mem.aluResult << "\n";
     }
     else if (id_ex.opcode == "SUB") {
