@@ -24,6 +24,8 @@ struct ID_EX_Register {
     int rd = 0;
     int immediate = 0;
     ControlSignals signals; // Control signals for this instruction
+    bool isBranch = false;
+    bool isJump = false;
 };
 
 struct EX_MEM_Register {
@@ -31,6 +33,8 @@ struct EX_MEM_Register {
     int rtVal = 0; // for SW
     int rd = 0;
     ControlSignals signals;
+    bool isBranch = false;
+    bool isJump = false;
 };
 
 struct MEM_WB_Register {
