@@ -1,20 +1,18 @@
 #pragma once
-#include <array>
-#include <iostream>
-#include <stdexcept>
 
+#include <array>
 
 class RegisterFile {
 private:
     std::array<int, 32> regArr; // 32 general-purpose registers
 
-
 public:
-    RegisterFile();
+    RegisterFile() {
+        regArr.fill(0);
+    };
+
     int read(int regNum) const;
     void write(int regNum, int value);
-    // Reset all registers to 0
-    void reset();
 
     // Print all registers (for debug mode)
     void print() const;

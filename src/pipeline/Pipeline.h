@@ -1,22 +1,16 @@
 #pragma once
+#ifndef PIPELINE_H
+#define PIPELINE_H
 
 #include <string>
-
-#include "register/RegisterFile.h"
-#include "alu/ALU.h"
-#include "memory/Memory.h"
-#include "ControlUnit.h"
+#include "../register/RegisterFile.h"
+#include "../alu/ALU.h"
+#include "../memory/Memory.h"
+#include "../control/ControlUnit.h"
 
 class ControlUnit; // forward declaration in case the full definition isn't available here
 
-// Structure to hold control signals
-struct ControlSignals {
-    bool RegWrite = false;
-    bool MemRead = false;
-    bool MemWrite = false;
-};
-
-//  Pipeline register structures 
+//  Pipeline register structures
 
 struct IF_ID_Register {
     std::string instruction;
@@ -45,7 +39,7 @@ struct MEM_WB_Register {
     ControlSignals signals;
 };
 
-//  Pipeline class 
+//  Pipeline class
 class Pipeline {
 private:
     RegisterFile& rf;
@@ -73,3 +67,5 @@ public:
     // Optional: helper to print pipeline state for debugging
     void printPipelineState() const;
 };
+
+#endif

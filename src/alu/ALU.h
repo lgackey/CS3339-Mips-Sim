@@ -1,5 +1,5 @@
 #pragma once
-#include <bitset>
+
 #include "../register/RegisterFile.h"
 
 class ALU {
@@ -22,3 +22,4 @@ public:
     void SRL(int reg1, int reg2, int samt);
 
 };
+
