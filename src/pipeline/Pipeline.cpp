@@ -39,6 +39,9 @@ void Pipeline::decode() {
     id_ex.rd = 3;
     id_ex.immediate = 0;
 
+    id_ex.isBranch = (opcode == "BEQ");
+    id_ex.isJump   = (opcode == "J");
+
     // Generate control signals from opcode
     id_ex.signals = controlUnit.generateSignals(id_ex.opcode);
 
@@ -52,18 +55,36 @@ void Pipeline::execute() {
     ex_mem.rd = id_ex.rd;
     ex_mem.rtVal = id_ex.rtVal;
 
+    ex_mem.isBranch = id_ex.isBranch;
+    ex_mem.isJump   = id_ex.isJump;
+
     
     if (id_ex.opcode == "ADD") {
         ex_mem.aluResult = alu.add(id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
-    } else if (id_ex.opcode == "SUB") {
+    } 
+    else if (id_ex.opcode == "SUB" || id_ex.opcode == "BEQ") {
+        
         ex_mem.aluResult = alu.sub(id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing SUB: " << ex_mem.aluResult << "\n";
-    } else {
-        // Default: just forward rsVal
-        ex_mem.aluResult = id_ex.rsVal;
-        std::cout << "Executing (default): " << ex_mem.aluResult << "\n";
-    }
+        std::cout << "Executing SUB/BEQ compare: " << ex_mem.aluResult << "\n";
+   
+        if (id_ex.isBranch) {
+            bool taken = (ex_mem.aluResult == 0);
+            std::cout << "Branch (BEQ) " << (taken ? "TAKEN" : "NOT TAKEN") << "\n";
+            
+        }
+        else if (id_ex.isJump) {
+            
+            ex_mem.aluResult = 0;
+            std::cout << "Executing JUMP instruction\n";
+           
+    
+        } else {
+         
+            ex_mem.aluResult = id_ex.rsVal;
+            std::cout << "Executing (default): " << ex_mem.aluResult << "\n";
+        }
+        }
 }
 
 // Memory stage
