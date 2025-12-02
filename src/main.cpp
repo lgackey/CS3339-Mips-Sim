@@ -1,16 +1,51 @@
+#include <fstream>
 #include <iostream>
 #include "alu/ALU.h"
 #include "register/RegisterFile.h"
 #include "memory/Memory.h"
 #include "pipeline/Pipeline.h"
 #include "control/ControlUnit.h"
+#include "parser/Parser.h"
 
 
 
-int main() {
+int main(int argc, char*argv[]) {
+
+    /* check if the correct number of arguments have been passed; bail otherwise */
+    if (argc < 3 || argc > 3) {
+        std::cout << "Usage: " << std::endl;
+        std::cout << "\t./mips_sim filename debug(true/false)" << std::endl;
+        return 1;
+    }
+
+    std::string input_filename = argv[1];
+    bool debug = argv[2];
+    std::string output_filename = "MIPS_simulator_Output";
+
+    std::ifstream input;
+    std::ofstream output;
+    //std::ofstream debug; we can maybe add this for the debug path
+
+    Memory mem;
     RegisterFile reg;
-    // --- ALU test ---
     ALU alu(reg);
+
+    input.open(input_filename);
+
+    //ADD stuff from the parser here and maybe some debugging stuff in here
+
+    input.close();
+
+
+    output.open(output_filename);
+
+    reg.print();
+    std::cout << std::endl;
+    mem.print();
+
+    output.close();
+
+/*  OLD TESTS
     reg.write(8, 15);
     reg.write(9, 12);
 
@@ -25,7 +60,7 @@ int main() {
 
     reg.print();
 
-/*
+
     int a = 10, b = 5;
 
     std::cout << "ALU Tests:\n";
