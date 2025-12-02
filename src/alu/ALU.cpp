@@ -30,12 +30,12 @@ void ALU::OR(int reg1, int reg2, int reg3) {
     reg_file->write(reg1, (reg_file->read(reg2) | reg_file->read(reg3)));
 }
 
-//shift reg2 left by samt and store the value in reg1
+//Shift reg2 left by samt and store the value in reg1
 void ALU::SLL(int reg1, int reg2, int samt) {
     reg_file->write(reg1, (reg_file->read(reg2) << samt));
 }
 
-//shift reg2 right by samt and store the value in reg1
+//Shift reg2 right by samt and store the value in reg1
 void ALU::SRL(int reg1, int reg2, int samt) {
     reg_file->write(reg1, (reg_file->read(reg2) >> samt));
 }
