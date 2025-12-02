@@ -112,9 +112,7 @@ void Pipeline::execute() {
         is_noop = true;
     }
     else {
-        // Default: just forward rsVal
-        ex_mem.aluResult = id_ex.rsVal;
-        std::cout << "Executing (default): " << ex_mem.aluResult << "\n";
+        is_label = true;
     }
 }
 
@@ -172,4 +170,8 @@ bool Pipeline::is_jump_instruction() {
 
 bool Pipeline::get_is_noop() {
     return is_noop;
+}
+
+bool Pipeline::get_is_label() {
+    return is_label;
 }

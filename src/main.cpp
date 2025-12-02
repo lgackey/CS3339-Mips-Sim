@@ -35,6 +35,7 @@ int main(int argc, char*argv[]) {
     Parser parser = Parser();
     std::vector<Instruction> instructions = parser.parseFile(input_filename);
 
+    /*
     for(Instruction i: instructions) {
         std::cout << i.opcode << std::endl
         << "RS: " << i.rs << " RT: " << i.rt << " RD: " << i.rd << std::endl
@@ -42,9 +43,32 @@ int main(int argc, char*argv[]) {
         << "Address: " << i.address << std::endl
         << "Is Label?: " << (i.isLabel ? "yes" : "no") << std::endl << std::endl;
     }
+    */
 
+    int pc = 0;
     for(int i = 0; i < instructions.size(); i++) {
+        pipeline.fetch(instructions[i], pc);
+        pipeline.decode();
+        pipeline.execute();
 
+        if(pipeline.is_jump_instruction()) {
+            if(instructions[i].opcode == "J") {
+                i = instructions[i].rs;
+            }
+            if(instructions[i].opcode == "BEQ") {
+                i = instructions[i].rd;
+            }
+        }
+        else if((!pipeline.get_is_noop()) && (!pipeline.get_is_label())) {
+            pipeline.memoryAccess();
+            pipeline.writeBack();
+            pipeline.printPipelineState();
+        }
+        else {
+            // noop, do nothing
+        }
+
+        pc += 4;
     }
 
     output.open(output_filename);

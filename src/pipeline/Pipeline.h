@@ -60,6 +60,7 @@ private:
 
     bool is_current_instruction_jump;
     bool is_noop;
+    bool is_label;
 
 public:
     // Constructor
@@ -76,6 +77,7 @@ public:
     void printPipelineState() const;
     bool is_jump_instruction();
     bool get_is_noop();
+    bool get_is_label();
 
 };
 
