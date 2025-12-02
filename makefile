@@ -3,6 +3,9 @@ CXXFLAGS = -Wall -g
 
 
 main: ALU.o ControlUnit.o Memory.o Parser.o Pipeline.o RegisterFile.o src/main.cpp
+	$(CXX) ALU.o ControlUnit.o Memory.o Parser.o Pipeline.o RegisterFile.o src/main.cpp -o "mips_sim"
+
+debug: ALU.o ControlUnit.o Memory.o Parser.o Pipeline.o RegisterFile.o src/main.cpp
 	$(CXX) $(CXXFLAGS) ALU.o ControlUnit.o Memory.o Parser.o Pipeline.o RegisterFile.o src/main.cpp -o "mips_sim"
 
 ALU.o: src/alu/ALU.h src/alu/ALU.cpp

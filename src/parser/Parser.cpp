@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <stdexcept>
+#include <utility>
 
 const std::map<std::string, int> regNames = {
     {"zero", 0}, {"at", 1}, {"v0", 2},
@@ -47,6 +48,13 @@ using namespace std;
 
 std::vector<Instruction> Parser::parseFile(const std::string& filename) {
     std::vector<Instruction> instructions;
+
+    std::vector<pair<int, std::string>> jump_calls;
+    std::vector<pair<int, std::string>> beq_calls;
+    // vector with pairs, first value is location of jump call in instruction vector,
+    // second value is string of label to jump to
+
+
     std::ifstream file(filename);
     if (!file) {
         std::cerr << "Failed to open file: " << filename << "\n";
@@ -94,7 +102,7 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
             }
         }
 
-        else if (opcode == "ADD" || opcode == "SUB" || opcode == "AND" ||
+        else if (opcode == "ADD" || opcode == "SUB" || opcode == "AND" || opcode == "MUL" ||
             opcode == "OR"  || opcode == "SLL" || opcode == "SRL") {
                 // expected: opcode rd, rs, rt
                 std::string rd_str, rs_str, rt_str;
@@ -142,7 +150,8 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
                 if (rt_str.back() == ',') rt_str.pop_back();
                 rs = getRegisterNumber(rs_str);
                 rt = getRegisterNumber(rt_str);
-                rd = getLabelIndex(label);
+                rd = 0;
+                beq_calls.push_back({line_number, label});
             }
         }
         else if (opcode == "J") {
@@ -150,12 +159,13 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
             if (!(iss >> label)) {
                 cerr << "Parser error: missing operands for J in line: " << cleaned << "\n";
             } else {
-                rs = getLabelIndex(label);
+                rs = 0;
+                jump_calls.push_back({line_number, label});
             }
         }
 
         // else is label
-        else {
+        else if (opcode != "NOP") {
 
             // remove any : from opcode
             while(opcode.find(":") != string::npos) {
@@ -172,6 +182,14 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
         // Store parsed instruction
         instructions.push_back({opcode, rs, rt, rd, imm, addr, is_label});
         line_number++;
+    }
+
+    for(pair<int, std::string> i : jump_calls) {
+        instructions[i.first].rs = getLabelIndex(i.second);
+    }
+
+    for(pair<int, std::string> i : beq_calls) {
+        instructions[i.first].rd = getLabelIndex(i.second);
     }
 
     return instructions;
@@ -210,8 +228,11 @@ int Parser::getRegisterNumber(const std::string& reg) {
 
 // get vector index of label
 int Parser::getLabelIndex(const std::string& label) {
+    std::string s = label;
+    // https://www.geeksforgeeks.org/cpp/convert-cpp-string-to-uppercase/
+    std::transform(s.begin(), s.end(), s.begin(),::toupper);
     try {
-        return labelTable.at(label);
+        return labelTable.at(s);
     }
     catch(std::out_of_range) {
         cout << "Invalid Label" << endl;
