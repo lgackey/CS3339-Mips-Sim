@@ -7,6 +7,9 @@
 #include "control/ControlUnit.h"
 #include "parser/Parser.h"
 
+#include <vector>
+#include <iostream>
+
 
 
 int main(int argc, char*argv[]) {
@@ -30,20 +33,18 @@ int main(int argc, char*argv[]) {
     RegisterFile reg;
     ALU alu(reg);
 
-    input.open(input_filename);
+    Parser testParser = Parser();
+    std::vector<Instruction> testVector = testParser.parseFile("../testinput.asm");
 
-    //ADD stuff from the parser here and maybe some debugging stuff in here
+    for(Instruction i: testVector) {
+        std::cout << i.opcode << std::endl
+        << "RS: " << i.rs << " RT: " << i.rt << " RD: " << i.rd << std::endl
+        << "Immediate: " << i.immediate << std::endl
+        << "Address: " << i.address << std::endl
+        << "Is Label?: " << (i.isLabel ? "yes" : "no") << std::endl << std::endl;
+    }
 
-    input.close();
-
-
-    output.open(output_filename);
-
-    reg.print();
-    std::cout << std::endl;
-    mem.print();
-
-    output.close();
+    std::cout << testParser.getLabelIndex("MAIN") << std::endl;
 
 /*  OLD TESTS
     reg.write(8, 15);
