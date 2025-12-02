@@ -26,6 +26,7 @@ void Pipeline::fetch(const Instruction instruction, int pc) {
 
 // Decode stage: placeholder decode using ControlUnit
 void Pipeline::decode() {
+    is_label = false;
 
     std::string instr = if_id.opcode;
     std::string opcode;
@@ -45,8 +46,49 @@ void Pipeline::decode() {
     id_ex.rd = if_id.rd;
     id_ex.immediate = 0;
 
-    // Generate control signals from opcode
-    id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    if (id_ex.opcode == "ADD") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if (id_ex.opcode == "ADDI") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if (id_ex.opcode == "SUB") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "MUL") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "AND") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "OR") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "SLL") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "SRL") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "LW") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "SW") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "BEQ") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "J") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else if(id_ex.opcode == "NOP") {
+        id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
+    }
+    else {
+        is_label = true;
+        return;
+    }
 
     std::cout << "Decoding instruction: " << if_id.opcode << "\n";
 }
@@ -111,9 +153,6 @@ void Pipeline::execute() {
     else if(id_ex.opcode == "NOP") {
         is_noop = true;
     }
-    else {
-        is_label = true;
-    }
 }
 
 // Memory stage
@@ -162,6 +201,8 @@ void Pipeline::printPipelineState() const {
 
     std::cout << "MEM/WB: writeData=" << mem_wb.writeData
               << " rd=" << mem_wb.rd << "\n";
+
+    std::cout << std::endl;
 }
 
 bool Pipeline::is_jump_instruction() {

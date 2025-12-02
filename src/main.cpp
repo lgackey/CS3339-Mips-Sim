@@ -49,26 +49,23 @@ int main(int argc, char*argv[]) {
     for(int i = 0; i < instructions.size(); i++) {
         pipeline.fetch(instructions[i], pc);
         pipeline.decode();
-        pipeline.execute();
-
-        if(pipeline.is_jump_instruction()) {
-            if(instructions[i].opcode == "J") {
-                i = instructions[i].rs;
+        if(!pipeline.get_is_label()) {
+            pipeline.execute();
+            if(pipeline.is_jump_instruction()) {
+                if(instructions[i].opcode == "J") {
+                    i = instructions[i].rs;
+                }
+                if(instructions[i].opcode == "BEQ") {
+                    i = instructions[i].rd;
+                }
             }
-            if(instructions[i].opcode == "BEQ") {
-                i = instructions[i].rd;
+            else {
+                pipeline.memoryAccess();
+                pipeline.writeBack();
+                pipeline.printPipelineState();
             }
+            pc += 4;
         }
-        else if((!pipeline.get_is_noop()) && (!pipeline.get_is_label())) {
-            pipeline.memoryAccess();
-            pipeline.writeBack();
-            pipeline.printPipelineState();
-        }
-        else {
-            // noop, do nothing
-        }
-
-        pc += 4;
     }
 
     output.open(output_filename);

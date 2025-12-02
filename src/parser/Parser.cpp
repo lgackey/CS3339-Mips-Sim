@@ -142,10 +142,15 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
                 if (rt_str.back() == ',') rt_str.pop_back();
                 rs = getRegisterNumber(rs_str);
                 rt = getRegisterNumber(rt_str);
-
-                // Store label as immediate for now (to resolve later)
-                // You can add a label-to-index map in next step
-                imm = 0;
+                rd = getLabelIndex(label);
+            }
+        }
+        else if (opcode == "J") {
+            string label;
+            if (!(iss >> label)) {
+                cerr << "Parser error: missing operands for J in line: " << cleaned << "\n";
+            } else {
+                rs = getLabelIndex(label);
             }
         }
 
