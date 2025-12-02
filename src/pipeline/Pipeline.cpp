@@ -97,7 +97,6 @@ void Pipeline::decode() {
 void Pipeline::execute() {
 
     is_current_instruction_jump = false;
-    is_noop = false;
     // Pass control signals and register IDs forward by default
     ex_mem.signals = id_ex.signals;
     ex_mem.rd = id_ex.rd;
@@ -207,10 +206,6 @@ void Pipeline::printPipelineState() const {
 
 bool Pipeline::is_jump_instruction() {
     return is_current_instruction_jump;
-}
-
-bool Pipeline::get_is_noop() {
-    return is_noop;
 }
 
 bool Pipeline::get_is_label() {

@@ -59,7 +59,6 @@ private:
     MEM_WB_Register mem_wb;
 
     bool is_current_instruction_jump;
-    bool is_noop;
     bool is_label;
 
 public:
@@ -76,7 +75,6 @@ public:
     // Optional: helper to print pipeline state for debugging
     void printPipelineState() const;
     bool is_jump_instruction();
-    bool get_is_noop();
     bool get_is_label();
 
 };
