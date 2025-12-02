@@ -13,15 +13,21 @@ Pipeline::Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl
     }
 
 // Fetch stage: just store instruction in IF/ID
-void Pipeline::fetch(const std::string& instruction, int pc) {
-    if_id.instruction = instruction;
+void Pipeline::fetch(const Instruction instruction, int pc) {
+    if_id.opcode = instruction.opcode;
+    if_id.rs = instruction.rs;
+    if_id.rt = instruction.rt;
+    if_id.rd = instruction.rd;
+    if_id.immediate = instruction.immediate;
+    if_id.address = instruction.address;   // for J-type
+    if_id.isLabel = instruction.isLabel;
     if_id.pc = pc;
 }
 
 // Decode stage: placeholder decode using ControlUnit
 void Pipeline::decode() {
 
-    std::string instr = if_id.instruction;
+    std::string instr = if_id.opcode;
     std::string opcode;
 
     std::size_t pos = instr.find(' ');
@@ -34,19 +40,22 @@ void Pipeline::decode() {
     id_ex.opcode = opcode;
 
     // Placeholder: fake register and immediate values until you add a real parser
-    id_ex.rsVal = 1;
-    id_ex.rtVal = 2;
-    id_ex.rd = 3;
+    id_ex.rsVal = if_id.rs;
+    id_ex.rtVal = if_id.rt;
+    id_ex.rd = if_id.rd;
     id_ex.immediate = 0;
 
     // Generate control signals from opcode
     id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
 
-    std::cout << "Decoding instruction: " << if_id.instruction << "\n";
+    std::cout << "Decoding instruction: " << if_id.opcode << "\n";
 }
 
 // Execute stage: call ALU according to control signals
 void Pipeline::execute() {
+
+    is_current_instruction_jump = false;
+    is_noop = false;
     // Pass control signals and register IDs forward by default
     ex_mem.signals = id_ex.signals;
     ex_mem.rd = id_ex.rd;
@@ -56,10 +65,53 @@ void Pipeline::execute() {
     if (id_ex.opcode == "ADD") {
         ex_mem.aluResult = alu.ADD(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
         std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
-    } else if (id_ex.opcode == "SUB") {
+    }
+    else if (id_ex.opcode == "ADDI") {
+        ex_mem.aluResult = alu.ADDI(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        std::cout << "Executing ADDI: " << ex_mem.aluResult << "\n";
+    }
+    else if (id_ex.opcode == "SUB") {
         ex_mem.aluResult = alu.SUB(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
         std::cout << "Executing SUB: " << ex_mem.aluResult << "\n";
-    } else {
+    }
+    else if(id_ex.opcode == "MUL") {
+        ex_mem.aluResult = alu.MUL(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        std::cout << "Executing MUL: " << ex_mem.aluResult << "\n";
+    }
+    else if(id_ex.opcode == "AND") {
+        ex_mem.aluResult = alu.AND(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        std::cout << "Executing AND: " << ex_mem.aluResult << "\n";
+    }
+    else if(id_ex.opcode == "OR") {
+        ex_mem.aluResult = alu.OR(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        std::cout << "Executing OR: " << ex_mem.aluResult << "\n";
+    }
+    else if(id_ex.opcode == "SLL") {
+        ex_mem.aluResult = alu.SLL(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        std::cout << "Executing SLL: " << ex_mem.aluResult << "\n";
+    }
+    else if(id_ex.opcode == "SRL") {
+        ex_mem.aluResult = alu.SRL(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        std::cout << "Executing SRL: " << ex_mem.aluResult << "\n";
+    }
+    else if(id_ex.opcode == "LW") {
+        ex_mem.aluResult = id_ex.rsVal;
+    }
+    else if(id_ex.opcode == "SW") {
+        ex_mem.aluResult = id_ex.rsVal;
+    }
+    else if(id_ex.opcode == "BEQ") {
+        if(id_ex.rsVal == id_ex.rtVal) {
+            is_current_instruction_jump = true;
+        }
+    }
+    else if(id_ex.opcode == "J") {
+        is_current_instruction_jump = true;
+    }
+    else if(id_ex.opcode == "NOP") {
+        is_noop = true;
+    }
+    else {
         // Default: just forward rsVal
         ex_mem.aluResult = id_ex.rsVal;
         std::cout << "Executing (default): " << ex_mem.aluResult << "\n";
@@ -97,7 +149,7 @@ void Pipeline::writeBack() {
 
 // Debug helper
 void Pipeline::printPipelineState() const {
-    std::cout << "IF/ID: instr=\"" << if_id.instruction
+    std::cout << "IF/ID: instr=\"" << if_id.opcode
               << "\" pc=" << if_id.pc << "\n";
 
     std::cout << "ID/EX: opcode=" << id_ex.opcode
@@ -112,4 +164,12 @@ void Pipeline::printPipelineState() const {
 
     std::cout << "MEM/WB: writeData=" << mem_wb.writeData
               << " rd=" << mem_wb.rd << "\n";
+}
+
+bool Pipeline::is_jump_instruction() {
+    return is_current_instruction_jump;
+}
+
+bool Pipeline::get_is_noop() {
+    return is_noop;
 }

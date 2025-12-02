@@ -29,11 +29,13 @@ int main(int argc, char*argv[]) {
     Memory mem;
     RegisterFile reg;
     ALU alu(reg);
+    ControlUnit* ctrl = new ControlUnit();
+    Pipeline pipeline = Pipeline(reg, alu, mem, ctrl);
 
-    Parser testParser = Parser();
-    std::vector<Instruction> testVector = testParser.parseFile(input_filename);
+    Parser parser = Parser();
+    std::vector<Instruction> instructions = parser.parseFile(input_filename);
 
-    for(Instruction i: testVector) {
+    for(Instruction i: instructions) {
         std::cout << i.opcode << std::endl
         << "RS: " << i.rs << " RT: " << i.rt << " RD: " << i.rd << std::endl
         << "Immediate: " << i.immediate << std::endl
@@ -41,7 +43,9 @@ int main(int argc, char*argv[]) {
         << "Is Label?: " << (i.isLabel ? "yes" : "no") << std::endl << std::endl;
     }
 
-    std::cout << testParser.getLabelIndex("MAIN") << std::endl;
+    for(int i = 0; i < instructions.size(); i++) {
+
+    }
 
 /*  OLD TESTS
     reg.write(8, 15);

@@ -7,13 +7,18 @@
 #include "../alu/ALU.h"
 #include "../memory/Memory.h"
 #include "../control/ControlUnit.h"
+#include "../parser/Parser.h"
 
 class ControlUnit; // forward declaration in case the full definition isn't available here
 
 //  Pipeline register structures
 
 struct IF_ID_Register {
-    std::string instruction;
+    std::string opcode;
+    int rs, rt, rd;
+    int immediate;
+    int address;   // for J-type
+    bool isLabel;  // internal flag
     int pc = 0;
 };
 
@@ -53,12 +58,15 @@ private:
     EX_MEM_Register ex_mem;
     MEM_WB_Register mem_wb;
 
+    bool is_current_instruction_jump;
+    bool is_noop;
+
 public:
     // Constructor
     Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl_);
 
     // Pipeline stages
-    void fetch(const std::string& instruction, int pc);
+    void fetch(const Instruction instruction, int pc);
     void decode();
     void execute();
     void memoryAccess();
@@ -66,6 +74,9 @@ public:
 
     // Optional: helper to print pipeline state for debugging
     void printPipelineState() const;
+    bool is_jump_instruction();
+    bool get_is_noop();
+
 };
 
 #endif

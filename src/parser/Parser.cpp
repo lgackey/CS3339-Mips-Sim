@@ -203,6 +203,7 @@ int Parser::getRegisterNumber(const std::string& reg) {
     }
 }
 
+// get vector index of label
 int Parser::getLabelIndex(const std::string& label) {
     try {
         return labelTable.at(label);
