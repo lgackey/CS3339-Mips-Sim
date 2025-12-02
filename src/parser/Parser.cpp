@@ -1,9 +1,11 @@
 #include "Parser.h"
+#include <climits>
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <algorithm>
 #include <map>
+#include <stdexcept>
 
 
 const std::map<std::string, int> regNames = {
@@ -159,5 +161,31 @@ else {
 }
 
 int Parser::getRegisterNumber(const std::string& reg) {
-    return regNames.at(reg);
+
+    // get reg as string
+    std::string str = reg;
+
+    // remove any $
+    while(str.find("$") != string::npos) {
+        str.erase(str.find("$"), str.find("$") + 1);
+    }
+
+    // try to return as mapped key pair value of register names
+    try {
+        return regNames.at(str);
+    }
+
+    // if that fails, return as converted string
+    catch (std::out_of_range){
+
+        try {
+            return stoi(str);
+        }
+
+        // if this fails, passed register is not a proper register
+        catch(std::invalid_argument) {
+            cout << "Given register is not a proper register!" << endl;
+            return INT_MIN;
+        }
+    }
 }

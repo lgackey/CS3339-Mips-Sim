@@ -1,6 +1,4 @@
-#include <fstream>
 #include <iostream>
-#include <algorithm>
 #include "Parser.h"
 
 
@@ -11,6 +9,7 @@ int main(int argc, char*argv[]) {
     Parser testParser = Parser();
     vector<Instruction> testVector = testParser.parseFile("../testinput.asm");
 
+    cout << "working" << endl;
     for(Instruction i: testVector) {
         cout << i.opcode
         << i.rs << " " << i.rt << " " << i.rd << endl
