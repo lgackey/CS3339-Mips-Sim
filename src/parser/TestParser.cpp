@@ -9,13 +9,13 @@ int main(int argc, char*argv[]) {
     Parser testParser = Parser();
     vector<Instruction> testVector = testParser.parseFile("../testinput.asm");
 
-    cout << "working" << endl;
     for(Instruction i: testVector) {
-        cout << i.opcode
-        << i.rs << " " << i.rt << " " << i.rd << endl
-        << i.immediate << endl
-        << i.isLabel << endl;
+        cout << i.opcode << endl
+        << "RS: " << i.rs << " RT: " << i.rt << " RD: " << i.rd << endl
+        << "Immediate: " << i.immediate << endl
+        << "Address: " << i.address << endl
+        << "Is Label?: " << (i.isLabel ? "yes" : "no") << endl << endl;
     }
 
-    cout << testVector[0].opcode << endl;
+    cout << testParser.getLabelIndex("MAIN") << endl;
 }

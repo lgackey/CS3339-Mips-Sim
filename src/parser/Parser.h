@@ -18,9 +18,10 @@ struct Instruction {
 class Parser {
 public:
     std::vector<Instruction> parseFile(const std::string& filename);
+    int getLabelIndex(const std::string& label);
+
     private:
     std::unordered_map<std::string, int> labelTable;
-
     int getRegisterNumber(const std::string& reg);
 };
 

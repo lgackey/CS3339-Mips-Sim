@@ -2,6 +2,8 @@
 # MIPS Full Instruction Test File
 # ================================
 
+main:
+
 # --- Basic arithmetic ---
 ADDI $a, $0, 10
 ADDI $2, $0, 20
@@ -78,5 +80,3 @@ ADD  $27, $26, $1     # Dependent on LW
 # ================================
 # End of program
 # ================================
-HALT
-
