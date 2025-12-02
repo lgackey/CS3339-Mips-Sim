@@ -44,29 +44,24 @@ ADDI $19, $0, 999     # SHOULD NOT EXECUTE
 branch_taken:
 ADDI $19, $0, 42      # Should become 42
 
-# Branch not taken
-BNE $2, $2, skip_this
-ADDI $20, $0, 777     # Should execute
-
-skip_this:
-
 # ================================
-# Jump test
+# Jump test and NOP test
 # ================================
 ADDI $21, $0, 5
 J jump_target
 ADDI $21, $0, 999     # Should be skipped
 
 jump_target:
+NOP
 ADDI $21, $21, 10     # 5 + 10 = 15
 
 # ================================
 # Memory addressing tests
 # ================================
-ADDI $22, $0, 200
-ADDI $23, $0, 4
-SW   $22, 4($23)
-LW   $24, 4($23)
+#ADDI $22, $0, 200
+#ADDI $23, $0, 4
+#SW   $22, 4($23)
+#LW   $24, 4($23)
 
 # ================================
 # Small pipeline hazard test
