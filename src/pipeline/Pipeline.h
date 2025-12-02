@@ -60,10 +60,11 @@ private:
 
     bool is_current_instruction_jump;
     bool is_label;
+    bool debug;
 
 public:
     // Constructor
-    Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl_);
+    Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl_, bool debug_);
 
     // Pipeline stages
     void fetch(const Instruction instruction, int pc);

@@ -1,5 +1,3 @@
-#include <fstream>
-#include <iostream>
 #include "alu/ALU.h"
 #include "register/RegisterFile.h"
 #include "memory/Memory.h"
@@ -7,8 +5,9 @@
 #include "control/ControlUnit.h"
 #include "parser/Parser.h"
 
-#include <sstream>
 #include <vector>
+#include <iostream>
+#include <fstream>
 #include <iostream>
 
 
@@ -30,20 +29,10 @@ int main(int argc, char*argv[]) {
     RegisterFile reg;
     ALU alu(reg);
     ControlUnit* ctrl = new ControlUnit();
-    Pipeline pipeline = Pipeline(reg, alu, mem, ctrl);
+    Pipeline pipeline = Pipeline(reg, alu, mem, ctrl, debug);
 
     Parser parser = Parser();
     std::vector<Instruction> instructions = parser.parseFile(input_filename);
-
-    /*
-    for(Instruction i: instructions) {
-        std::cout << i.opcode << std::endl
-        << "RS: " << i.rs << " RT: " << i.rt << " RD: " << i.rd << std::endl
-        << "Immediate: " << i.immediate << std::endl
-        << "Address: " << i.address << std::endl
-        << "Is Label?: " << (i.isLabel ? "yes" : "no") << std::endl << std::endl;
-    }
-    */
 
     int pc = 0;
     output.open(output_filename);

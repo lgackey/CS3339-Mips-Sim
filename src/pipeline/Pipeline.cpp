@@ -7,8 +7,8 @@ class Memory;
 #include <iostream>
 #include <string>
 
-Pipeline::Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl_)
-    : rf(rf_), alu(alu_), mem(mem_) {
+Pipeline::Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl_, bool debug_)
+    : rf(rf_), alu(alu_), mem(mem_), debug(debug_){
     controlUnit = ctrl_; //ControlUnit implementation
     }
 
@@ -90,7 +90,9 @@ void Pipeline::decode() {
         return;
     }
 
-    std::cout << "Decoding instruction: " << if_id.opcode << "\n";
+    if(debug) {
+        std::cout << "Decoding instruction: " << if_id.opcode << "\n";
+    }
 }
 
 // Execute stage: call ALU according to control signals
@@ -105,35 +107,35 @@ void Pipeline::execute() {
     // Very simple example: use opcode to pick ALU op
     if (id_ex.opcode == "ADD") {
         ex_mem.aluResult = alu.ADD(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";}
     }
     else if (id_ex.opcode == "ADDI") {
         ex_mem.aluResult = alu.ADDI(id_ex.rd, id_ex.rsVal, id_ex.immediate);
-        std::cout << "Executing ADDI: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing ADDI: " << ex_mem.aluResult << "\n";}
     }
     else if (id_ex.opcode == "SUB") {
         ex_mem.aluResult = alu.SUB(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing SUB: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing SUB: " << ex_mem.aluResult << "\n";}
     }
     else if(id_ex.opcode == "MUL") {
         ex_mem.aluResult = alu.MUL(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing MUL: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing MUL: " << ex_mem.aluResult << "\n";}
     }
     else if(id_ex.opcode == "AND") {
         ex_mem.aluResult = alu.AND(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing AND: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing AND: " << ex_mem.aluResult << "\n";}
     }
     else if(id_ex.opcode == "OR") {
         ex_mem.aluResult = alu.OR(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing OR: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing OR: " << ex_mem.aluResult << "\n";}
     }
     else if(id_ex.opcode == "SLL") {
         ex_mem.aluResult = alu.SLL(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing SLL: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing SLL: " << ex_mem.aluResult << "\n";}
     }
     else if(id_ex.opcode == "SRL") {
         ex_mem.aluResult = alu.SRL(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
-        std::cout << "Executing SRL: " << ex_mem.aluResult << "\n";
+        if(debug) {std::cout << "Executing SRL: " << ex_mem.aluResult << "\n";}
     }
     else if(id_ex.opcode == "LW") {
         ex_mem.aluResult = id_ex.rsVal;
@@ -175,10 +177,10 @@ ControlSignals Pipeline::memoryAccess() {
 void Pipeline::writeBack() {
     if (mem_wb.signals.RegWrite) {
         rf.write(mem_wb.rd, mem_wb.writeData);
-        std::cout << "WriteBack: Register " << mem_wb.rd
-                  << " = " << mem_wb.writeData << "\n";
+        if(debug) {std::cout << "WriteBack: Register " << mem_wb.rd
+                  << " = " << mem_wb.writeData << "\n";}
     } else {
-        std::cout << "WriteBack: no register write\n";
+        if(debug) {std::cout << "WriteBack: no register write\n";}
     }
 }
 
