@@ -19,13 +19,15 @@ int RegisterFile::read(int regNum) const {
 }
 
 // Write a value to a register (except zero)
-void RegisterFile::write(int regNum, int value) {
-    if (regNum <= 0 || regNum >= 32) return; // $0 immutable, others protected by bounds
+int RegisterFile::write(int regNum, int value) {
+    if (regNum <= 0 || regNum >= 32) return INT_MIN; // $0 immutable, others protected by bounds
     regArr[regNum] = value;
+
+    return value;
 }
 
 //code to convert an int to binary
-std::bitset<32> makeBinary(int n) {
+std::bitset<32> RegisterFile::makeBinary(int n) const {
     uint32_t temp_bit_value;
     memcpy(&temp_bit_value, &n, sizeof(temp_bit_value));
     std::bitset<32> binary_form(temp_bit_value);

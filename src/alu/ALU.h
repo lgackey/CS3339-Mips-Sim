@@ -10,16 +10,16 @@ public:
     ALU(RegisterFile& reg) {
         reg_file = &reg;
     }
-    void ADD(int reg1, int reg2, int reg3);
-    void ADDI(int reg1, int reg2, int num);
-    void SUB(int reg1, int reg2, int reg3);
-    void MUL(int reg1, int reg2, int reg3);
+    int ADD(int reg1, int reg2, int reg3);
+    int ADDI(int reg1, int reg2, int num);
+    int SUB(int reg1, int reg2, int reg3);
+    int MUL(int reg1, int reg2, int reg3);
 
-    void AND(int reg1, int reg2, int reg3);
-    void OR(int reg1, int reg2, int reg3);
+    int AND(int reg1, int reg2, int reg3);
+    int OR(int reg1, int reg2, int reg3);
 
-    void SLL(int reg1, int reg2, int samt);
-    void SRL(int reg1, int reg2, int samt);
+    int SLL(int reg1, int reg2, int samt);
+    int SRL(int reg1, int reg2, int samt);
 
 };
 

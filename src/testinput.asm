@@ -5,7 +5,7 @@
 main:
 
 # --- Basic arithmetic ---
-ADDI $a, $0, 10
+ADDI $a, $0, 10       # this should throw an error as $a is not a proper register
 ADDI $2, $0, 20
 ADD  $3, $1, $2       # 10 + 20 = 30
 SUB  $4, $2, $1       # 20 - 10 = 10

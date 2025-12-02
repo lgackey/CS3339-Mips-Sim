@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <cstdint>
+#include <bitset>
 
 class Memory {
 private:
@@ -17,4 +18,5 @@ public:
 
     // Print memory contents (for debug mode)
     void print() const;
+    std::bitset<32> makeBinary(int n) const;
 };

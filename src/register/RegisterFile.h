@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <bitset>
 
 class RegisterFile {
 private:
@@ -12,8 +13,8 @@ public:
     };
 
     int read(int regNum) const;
-    void write(int regNum, int value);
-
+    int write(int regNum, int value);
+    std::bitset<32> makeBinary(int n) const;
     // Print all registers (for debug mode)
     void print() const;
 };

@@ -7,9 +7,9 @@ class Memory;
 #include <iostream>
 #include <string>
 
-Pipeline::Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_)
+Pipeline::Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl_)
     : rf(rf_), alu(alu_), mem(mem_) {
-    controlUnit = //ControlUnit implementation 
+    controlUnit = ctrl_; //ControlUnit implementation
     }
 
 // Fetch stage: just store instruction in IF/ID
@@ -40,7 +40,7 @@ void Pipeline::decode() {
     id_ex.immediate = 0;
 
     // Generate control signals from opcode
-    id_ex.signals = controlUnit.generateSignals(id_ex.opcode);
+    id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
 
     std::cout << "Decoding instruction: " << if_id.instruction << "\n";
 }
@@ -54,10 +54,10 @@ void Pipeline::execute() {
 
     // Very simple example: use opcode to pick ALU op
     if (id_ex.opcode == "ADD") {
-        ex_mem.aluResult = alu.add(id_ex.rsVal, id_ex.rtVal);
+        ex_mem.aluResult = alu.ADD(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
         std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
     } else if (id_ex.opcode == "SUB") {
-        ex_mem.aluResult = alu.sub(id_ex.rsVal, id_ex.rtVal);
+        ex_mem.aluResult = alu.SUB(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
         std::cout << "Executing SUB: " << ex_mem.aluResult << "\n";
     } else {
         // Default: just forward rsVal
@@ -71,9 +71,9 @@ void Pipeline::memoryAccess() {
     mem_wb.signals = ex_mem.signals;
 
     if (ex_mem.signals.MemRead) {
-        mem_wb.writeData = mem.loadWord(ex_mem.aluResult);
+        mem_wb.writeData = mem.LW(ex_mem.aluResult);
     } else if (ex_mem.signals.MemWrite) {
-        mem.storeWord(ex_mem.aluResult, ex_mem.rtVal);
+        mem.SW(ex_mem.aluResult, ex_mem.rtVal);
         // For a store, nothing to write back
         mem_wb.writeData = 0;
     } else {

@@ -21,7 +21,7 @@ void Memory::SW(int address, int value) {
 }
 
 //Makes an integer a binary number
-std::bitset<32> makeBinary(int n) {
+std::bitset<32> Memory::makeBinary(int n) const {
     uint32_t temp_bit_value;
     memcpy(&temp_bit_value, &n, sizeof(temp_bit_value));
     std::bitset<32> binary_form(temp_bit_value);

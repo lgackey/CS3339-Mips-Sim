@@ -55,7 +55,7 @@ private:
 
 public:
     // Constructor
-    Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_);
+    Pipeline(RegisterFile& rf_, ALU& alu_, Memory& mem_, ControlUnit* ctrl_);
 
     // Pipeline stages
     void fetch(const std::string& instruction, int pc);
