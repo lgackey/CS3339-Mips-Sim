@@ -66,13 +66,13 @@ int main(int argc, char*argv[]) {
 
                 if(debug) {
                     pipeline.printPipelineState();
-                    output << std::endl;
+                    std::cout << std::endl;
                     ctrl->printSignals(doWB);
-                    output << std::endl;
+                    std::cout << std::endl;
                     reg.print();
-                    output << std::endl;
+                    std::cout << std::endl;
                     mem.print();
-                    output << std::endl;
+                    std::cout << std::endl;
                 }
             }
         }
@@ -80,9 +80,9 @@ int main(int argc, char*argv[]) {
 
 
 
-    output << std::endl;
+    std::cout << std::endl;
     reg.print();
-    output << std::endl;
+    std::cout << std::endl;
     mem.print();
 
     output.close();
