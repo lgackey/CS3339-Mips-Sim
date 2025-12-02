@@ -21,9 +21,7 @@ public:
     private:
     std::unordered_map<std::string, int> labelTable;
 
-    void buildLabelTable(const std::string& filename);
     int getRegisterNumber(const std::string& reg);
-    Instruction parseLine(const std::string& line);
 };
 
 
