@@ -71,7 +71,7 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
 
         if (cleaned.empty())
             continue;  // Skip blank/comment-only lines
-
+        cout << cleaned << endl;
         std::istringstream iss(cleaned);
         std::string opcode;
         int rs = 0, rt = 0, rd = 0, imm = 0, addr = 0;
@@ -100,6 +100,7 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
                 rd = getRegisterNumber(rd_str);
                 rs = getRegisterNumber(rs_str);
 
+                cout << rd << " " << rs << " " << imm << endl;
             }
         }
 

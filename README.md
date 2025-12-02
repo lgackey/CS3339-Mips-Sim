@@ -34,6 +34,6 @@ This project is designed to interpret and simulate MIPS x86 instructions through
 A pre-compiled binary is not available. To compile, use the included makefile.
 ```
 make mips_sim
-./mips_sim src/testinput.asm false
+./mips_sim src/testinput.asm 0
 ```
 
