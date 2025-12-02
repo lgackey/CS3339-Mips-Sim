@@ -152,7 +152,7 @@ void Pipeline::execute() {
 }
 
 // Memory stage
-void Pipeline::memoryAccess() {
+ControlSignals Pipeline::memoryAccess() {
     mem_wb.signals = ex_mem.signals;
 
     if (ex_mem.signals.MemRead) {
@@ -167,6 +167,8 @@ void Pipeline::memoryAccess() {
     }
 
     mem_wb.rd = ex_mem.rd;
+
+    return mem_wb.signals;
 }
 
 // WriteBack stage: write to register file if enabled

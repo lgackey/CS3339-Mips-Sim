@@ -69,7 +69,7 @@ public:
     void fetch(const Instruction instruction, int pc);
     void decode();
     void execute();
-    void memoryAccess();
+    ControlSignals memoryAccess();
     void writeBack();
 
     // Optional: helper to print pipeline state for debugging

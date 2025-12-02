@@ -60,8 +60,10 @@ int main(int argc, char*argv[]) {
                 }
             }
             else {
-                pipeline.memoryAccess();
-                pipeline.writeBack();
+                ControlSignals doWB = pipeline.memoryAccess();
+                if(!doWB.MemWrite) {
+                    pipeline.writeBack();
+                }
                 pipeline.printPipelineState();
             }
             pc += 4;
