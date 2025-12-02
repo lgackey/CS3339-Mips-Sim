@@ -1,8 +1,5 @@
 #pragma once
-#ifndef ALU_H
-#define ALU_H
 
-#include <bitset>
 #include "../register/RegisterFile.h"
 
 class ALU {
@@ -26,4 +23,3 @@ public:
 
 };
 
-#endif
