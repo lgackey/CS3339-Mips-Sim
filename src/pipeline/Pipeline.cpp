@@ -149,9 +149,6 @@ void Pipeline::execute() {
     else if(id_ex.opcode == "J") {
         is_current_instruction_jump = true;
     }
-    else if(id_ex.opcode == "NOP") {
-        is_noop = true;
-    }
 }
 
 // Memory stage
