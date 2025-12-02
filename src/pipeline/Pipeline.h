@@ -10,14 +10,7 @@
 
 class ControlUnit; // forward declaration in case the full definition isn't available here
 
-// Structure to hold control signals
-struct ControlSignals {
-    bool RegWrite = false;
-    bool MemRead = false;
-    bool MemWrite = false;
-};
-
-//  Pipeline register structures 
+//  Pipeline register structures
 
 struct IF_ID_Register {
     std::string instruction;
@@ -46,7 +39,7 @@ struct MEM_WB_Register {
     ControlSignals signals;
 };
 
-//  Pipeline class 
+//  Pipeline class
 class Pipeline {
 private:
     RegisterFile& rf;
