@@ -33,7 +33,7 @@ void Pipeline::decode() {
 
     id_ex.opcode = opcode;
 
-    // Placeholder: fake register and immediate values until you add a real parser
+    
     id_ex.rsVal = 1;
     id_ex.rtVal = 2;
     id_ex.rd = 3;
@@ -52,7 +52,7 @@ void Pipeline::execute() {
     ex_mem.rd = id_ex.rd;
     ex_mem.rtVal = id_ex.rtVal;
 
-    // Very simple example: use opcode to pick ALU op
+    
     if (id_ex.opcode == "ADD") {
         ex_mem.aluResult = alu.add(id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
