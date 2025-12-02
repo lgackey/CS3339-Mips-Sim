@@ -24,9 +24,6 @@ int main(int argc, char*argv[]) {
     std::string input_filename = argv[1];
     bool debug = argv[2];
     std::string output_filename = "MIPS_simulator_Output";
-
-    std::ifstream input;
-    std::ofstream output;
     //std::ofstream debug; we can maybe add this for the debug path
 
     Memory mem;
@@ -34,7 +31,7 @@ int main(int argc, char*argv[]) {
     ALU alu(reg);
 
     Parser testParser = Parser();
-    std::vector<Instruction> testVector = testParser.parseFile("../testinput.asm");
+    std::vector<Instruction> testVector = testParser.parseFile(input_filename);
 
     for(Instruction i: testVector) {
         std::cout << i.opcode << std::endl
