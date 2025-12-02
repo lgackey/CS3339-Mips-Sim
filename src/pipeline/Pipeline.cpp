@@ -44,7 +44,9 @@ void Pipeline::decode() {
     id_ex.rsVal = if_id.rs;
     id_ex.rtVal = if_id.rt;
     id_ex.rd = if_id.rd;
-    id_ex.immediate = 0;
+
+    std::cout << id_ex.rd << " " << id_ex.rsVal << " " << id_ex.rtVal << std::endl;
+    id_ex.immediate = if_id.immediate;
 
     if (id_ex.opcode == "ADD") {
         id_ex.signals = controlUnit->generateSignals(id_ex.opcode);
@@ -104,36 +106,36 @@ void Pipeline::execute() {
 
     // Very simple example: use opcode to pick ALU op
     if (id_ex.opcode == "ADD") {
-        ex_mem.aluResult = alu.ADD(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        ex_mem.aluResult = alu.ADD(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
     }
     else if (id_ex.opcode == "ADDI") {
-        std::cout << id_ex.rsVal << std::endl;
-        ex_mem.aluResult = alu.ADDI(id_ex.rsVal, id_ex.rtVal, id_ex.immediate);
+        std::cout << id_ex.immediate << std::endl;
+        ex_mem.aluResult = alu.ADDI(id_ex.rd, id_ex.rsVal, id_ex.immediate);
         std::cout << "Executing ADDI: " << ex_mem.aluResult << "\n";
     }
     else if (id_ex.opcode == "SUB") {
-        ex_mem.aluResult = alu.SUB(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        ex_mem.aluResult = alu.SUB(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing SUB: " << ex_mem.aluResult << "\n";
     }
     else if(id_ex.opcode == "MUL") {
-        ex_mem.aluResult = alu.MUL(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        ex_mem.aluResult = alu.MUL(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing MUL: " << ex_mem.aluResult << "\n";
     }
     else if(id_ex.opcode == "AND") {
-        ex_mem.aluResult = alu.AND(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        ex_mem.aluResult = alu.AND(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing AND: " << ex_mem.aluResult << "\n";
     }
     else if(id_ex.opcode == "OR") {
-        ex_mem.aluResult = alu.OR(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        ex_mem.aluResult = alu.OR(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing OR: " << ex_mem.aluResult << "\n";
     }
     else if(id_ex.opcode == "SLL") {
-        ex_mem.aluResult = alu.SLL(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        ex_mem.aluResult = alu.SLL(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing SLL: " << ex_mem.aluResult << "\n";
     }
     else if(id_ex.opcode == "SRL") {
-        ex_mem.aluResult = alu.SRL(id_ex.rsVal, id_ex.rtVal, id_ex.rd);
+        ex_mem.aluResult = alu.SRL(id_ex.rd, id_ex.rsVal, id_ex.rtVal);
         std::cout << "Executing SRL: " << ex_mem.aluResult << "\n";
     }
     else if(id_ex.opcode == "LW") {

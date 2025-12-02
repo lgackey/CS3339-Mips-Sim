@@ -84,21 +84,22 @@ std::vector<Instruction> Parser::parseFile(const std::string& filename) {
 
         // parse based on opcode
         if (opcode == "ADDI") {
-            // expected: addi rt, rs, imm
-            std::string rt_str, rs_str;
-            if (!(iss >> rt_str)) {
+            // expected: addi rd, rs, imm
+            std::string rd_str, rs_str;
+            if (!(iss >> rd_str)) {
                 std::cerr << "Parser error: missing rt for ADDI in line: " << cleaned << "\n";
             } else {
                 // remove possible trailing commas
-                if (rt_str.back() == ',') rt_str.pop_back();
+                if (rd_str.back() == ',') rs_str.pop_back();
                 iss >> rs_str;
                 if (!rs_str.empty() && rs_str.back() == ',') rs_str.pop_back();
                 iss >> imm;
 
 
 
-                rt = getRegisterNumber(rt_str);
+                rd = getRegisterNumber(rd_str);
                 rs = getRegisterNumber(rs_str);
+
             }
         }
 

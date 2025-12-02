@@ -20,7 +20,7 @@ int RegisterFile::read(int regNum) const {
 
 // Write a value to a register (except zero)
 int RegisterFile::write(int regNum, int value) {
-    if (regNum <= 0 || regNum >= 32) return INT_MIN; // $0 immutable, others protected by bounds
+    if (regNum < 0 || regNum >= 32) return INT_MIN; // $0 immutable, others protected by bounds
     regArr[regNum] = value;
 
     return value;
