@@ -7,6 +7,7 @@
 #include "control/ControlUnit.h"
 #include "parser/Parser.h"
 
+#include <sstream>
 #include <vector>
 #include <iostream>
 
@@ -20,9 +21,8 @@ int main(int argc, char*argv[]) {
         std::cout << "\t./mips_sim filename debug(true/false)" << std::endl;
         return 1;
     }
-
     std::string input_filename = argv[1];
-    bool debug = argv[2];
+    bool debug = atoi(argv[2]);
     std::string output_filename = "MIPS_simulator_Output";
     std::ofstream output;
 
@@ -47,7 +47,6 @@ int main(int argc, char*argv[]) {
 
     int pc = 0;
     for(int i = 0; i < instructions.size(); i++) {
-        std::cout << instructions[i].rd << std::endl;
         pipeline.fetch(instructions[i], pc);
         pipeline.decode();
         if(!pipeline.get_is_label()) {
@@ -63,7 +62,17 @@ int main(int argc, char*argv[]) {
             else {
                 ControlSignals doWB = pipeline.memoryAccess();
                 pipeline.writeBack();
-                pipeline.printPipelineState();
+
+                if(debug) {
+                    pipeline.printPipelineState();
+                    std::cout << std::endl;
+                    ctrl->printSignals(doWB);
+                    std::cout << std::endl;
+                    reg.print();
+                    std::cout << std::endl;
+                    mem.print();
+                    std::cout << std::endl;
+                }
             }
             pc += 4;
         }
@@ -71,6 +80,7 @@ int main(int argc, char*argv[]) {
 
     output.open(output_filename);
 
+    std::cout << std::endl;
     reg.print();
     std::cout << std::endl;
     mem.print();

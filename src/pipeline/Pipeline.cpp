@@ -44,8 +44,6 @@ void Pipeline::decode() {
     id_ex.rsVal = if_id.rs;
     id_ex.rtVal = if_id.rt;
     id_ex.rd = if_id.rd;
-
-    std::cout << id_ex.rd << " " << id_ex.rsVal << " " << id_ex.rtVal << std::endl;
     id_ex.immediate = if_id.immediate;
 
     if (id_ex.opcode == "ADD") {
@@ -110,7 +108,6 @@ void Pipeline::execute() {
         std::cout << "Executing ADD: " << ex_mem.aluResult << "\n";
     }
     else if (id_ex.opcode == "ADDI") {
-        std::cout << id_ex.immediate << std::endl;
         ex_mem.aluResult = alu.ADDI(id_ex.rd, id_ex.rsVal, id_ex.immediate);
         std::cout << "Executing ADDI: " << ex_mem.aluResult << "\n";
     }
